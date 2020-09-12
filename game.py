@@ -147,12 +147,20 @@ class Tictactoe():
         # If no winning move found, return False.
         return False
             
-    def checkValidMove(self, loc):
+    def checkValidInput(self, loc):
         '''
-        Returns true or false. Prompts user for where they want to 
-        place their marker. Updates self.board.
-        loc: represents a "box" in the tic tac toe board.
+        Returns true or false. Updates self.board.
+        loc: An integer representing a "box" in the tic tac toe board.
         '''
+        # Ensure user input is some integer
+        while True:
+            try:
+                loc = int(loc)
+            except ValueError:
+                print("Sorry, please enter an integer")
+                return 0
+            else:
+                break
         if loc <= 0:
             print("Please enter value larger than 0")
             return False
@@ -179,8 +187,9 @@ class Tictactoe():
             self.printBoard()
             # Only exit this while loop if valid move is played.
             while True:
-                location = int(input("{}, choose a box to place an {} into\n".format(player.name, player.marker)))
-                if self.checkValidMove(location):
+                location = input("{}, choose a box to place an {} into\n".format(player.name, player.marker))
+                if self.checkValidInput(location):
+                    location = int(location)
                     row, col = self.locationToIndex(location)
                     self.board[row][col] = player.marker
                     break
