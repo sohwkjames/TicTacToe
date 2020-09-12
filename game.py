@@ -19,10 +19,12 @@ class Tictactoe():
                  represented by integers. played cells are represented by
                  the player's marker.
         n:       Positive integer representing the number of rows for tic tac toe. Minimum is 3. 
+        unplayed_cells: integer representing how many unplayed cells there are.
         '''
         self.players = []
         self.board = []
         self.n = 0
+        self.unplayed_cells = 0
 
     def createBoard(self, n=3):
         '''
@@ -30,6 +32,7 @@ class Tictactoe():
         Eg for n=3: [[1,2,3],[4,5,6,],[7,8,9]]
         '''
         self.n = n
+        self.unplayed_cells = n**2
         for i in range(n):
             cur_row = [0] * n
             for j in range(n):
@@ -45,10 +48,12 @@ class Tictactoe():
         for i, row in enumerate(self.board):
             s = ""
             for val in row:
+                val = " "+str(val)
                 s += " {} |".format(str(val))
             print(s[:-1])
             if i != len(self.board)-1:
-                print('----' * self.n)
+                dashes = "-" * len(s[:-1])
+                print(dashes)
 
     def setPlayers(self):
         '''
@@ -164,9 +169,12 @@ class Tictactoe():
 
     def playRound(self):
         '''
-        Returns an integer player.id if a winner is found. Does not return anything otherwise.
+        Returns an integer player.id if a winner is found. Return 0 if winner not found.
+        Returns -1 if draw game.
         Plays a single round for each player.'''
         for player in self.players:
+            if self.unplayed_cells == 0:
+                return -1
             # Show board state
             self.printBoard()
             # Only exit this while loop if valid move is played.
@@ -176,11 +184,15 @@ class Tictactoe():
                     row, col = self.locationToIndex(location)
                     self.board[row][col] = player.marker
                     break
+            # Update unplayed cells count.
+            self.unplayed_cells -= 1
             # Check if win
             if self.checkWinningMove(player, row, col):
                 print("Congrats {}! You won!".format(player.name))
-                print("Player id is:", player.id)
                 return player.id
+        return 0
+            
+                
 
     def getN(self):
         '''
@@ -206,11 +218,15 @@ class Tictactoe():
         self.setPlayers()
         while True:
             # playRound returns player ID (some positive integer) if winner is found.
-            if self.playRound() > 0:
+            result = self.playRound()
+            if result > 0:
                 self.printBoard()
                 return
+            if result == -1:
+                self.printBoard()
+                print("Draw game!")
+                return
                 
-            
             
                             
             
