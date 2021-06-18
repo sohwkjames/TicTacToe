@@ -1,0 +1,6 @@
+python3 -c "from test import testLocation; testLocation(1, (0,0))"
+python3 -c "from test import testLocation; testLocation(2, (0,1))"
+python3 -c "from test import testLocation; testLocation(3, (0,2))"
+python3 -c "from test import testLocation; testLocation(4, (1,0))"
+python3 -c "from test import testLocation; testLocation(7, (2,0))"
+python3 -c "from test import testLocation; testLocation(9, (2,2))"
